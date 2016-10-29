@@ -1,0 +1,25 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "An Amazon-like storefront that utilizes Node and MySQL to take in orders from customers and deplete stock from the store's inventory. ",
+  "main": "BamazonCustomer.js",
+  "dependencies": {
+    "cli-table": "^0.3.1",
+    "inquirer": "^1.2.2",
+    "mysql": "^2.11.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShannonGreen27/Bamazon.git"
+  },
+  "author": "Shannon Green",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShannonGreen27/Bamazon/issues"
+  },
+  "homepage": "https://github.com/ShannonGreen27/Bamazon#readme"
+}
