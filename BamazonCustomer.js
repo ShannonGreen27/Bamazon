@@ -19,8 +19,10 @@ var table = new Table({
     head: ['Item Id', 'Product Name', 'Price (US$)', 'Stock']
   , colWidths: [10, 20, 15, 10]
 });
-createTable();
-function createTable() {
+
+viewProducts();
+
+function viewProducts() {
 	connection.query('SELECT * FROM Products', function(err, result) {
 		for (var i = 0; i < result.length; i++) {
 
@@ -79,16 +81,7 @@ function updateStock(quantity,stockQuantity,itemId,price) {
 	    var total = price*quantity;
 	    console.log("Your total is: $" + total);
 	});
+	connection.end(function(err) {
+		console.log('\n[Connection Terminated.]')
+	});
 }
-
-
-// 	connection.query("INSERT INTO itemTable SET ?", {itemName:, artist:"Disturbed", genre:"Rock"}, function(err, res){});
-// }
-
-
-
-
-// connection.end(function(err) {
-// 	console.log('\n[Terminated Connection.]')
-// });
-
