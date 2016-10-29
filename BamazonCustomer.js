@@ -63,10 +63,10 @@ function makePurchase() {
 				var itemId = user.itemId;
 				var price = result[0].Price;
 
-				if (quantity < stockQuantity) {
+				if (quantity <= stockQuantity) {
 					updateStock(quantity,stockQuantity,itemId,price);
 				} else {
-					console.log("Sorry, we don't have that much in stock");
+					console.log("Sorry, we don't have that many in stock");
 					makePurchase();
 				}
 			});
@@ -81,6 +81,7 @@ function updateStock(quantity,stockQuantity,itemId,price) {
 	    var total = price*quantity;
 	    console.log("Your total is: $" + total);
 	});
+	
 	connection.end(function(err) {
 		console.log('\n[Connection Terminated.]')
 	});

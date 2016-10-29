@@ -56,7 +56,7 @@ function viewProducts() {
 	    		[result[i].itemId, result[i].productName, result[i].departmentName, result[i].Price, result[i].stockQuantity]
 			);
 		}	
-		console.log(table.toString());	
+		console.log(table.toString());
 	})
 
 }
@@ -136,21 +136,14 @@ function addNewProduct() {
 			console.log("Please input numeric values")
 			addNewProduct();
 		} else {
-			var quantity = parseInt(user.stockQuantity);
+
+			var quantity = user.stockQuantity;
 			var price = user.Price;
 			var productName = user.productName;
 			var departmentName = user.departmentName;
 
-			connection.query("INSERT INTO Products (productName, departmentName, Price, stockQuantity) VALUES "+(productName, departmentName, price, quantity), function(err, result) {
-				console.log(productName);
-				console.log(typeof productName);
-				console.log(departmentName);
-				console.log(typeof departmentName);
-				console.log(price);
-				console.log(typeof price);
-				console.log(quantity);
-				console.log(typeof quantity);
-				console.log(result);
+			connection.query('INSERT INTO Products (productName,departmentName,Price,stockQuantity) VALUES ("'+productName+'","'+departmentName+'",'+price+',' +quantity+");", function(err, result) {
+					console.log("Product has been added");
 			});
 		}	
 	});
