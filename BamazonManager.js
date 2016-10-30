@@ -50,28 +50,15 @@ function getChoice() {
 
 function viewProducts() {
 	connection.query('SELECT * FROM Products', function(err, result) {
-		for (var i = 0; i < result.length; i++) {
-
-			table.push(
-	    		[result[i].itemId, result[i].productName, result[i].departmentName, result[i].Price, result[i].stockQuantity]
-			);
-		}	
-		console.log(table.toString());
+		createTable(result);
 	})
 
 }
 
 function viewLowInventory() {
 	connection.query('SELECT * FROM Products WHERE stockQuantity<5', function(err, result) {
-		for (var i = 0; i < result.length; i++) {
-
-			table.push(
-	    		[result[i].itemId, result[i].productName, result[i].departmentName, result[i].Price, result[i].stockQuantity]
-			);
-		}	
-		console.log(table.toString());	
+		createTable(result);
 	})
-
 }
 
 
@@ -99,6 +86,8 @@ function restockInventory() {
 			var itemId = user.itemId;
 
 			connection.query('UPDATE Products SET stockQuantity=stockQuantity + '+ quantity + ' WHERE itemId=' + itemId, function(err, result) {
+				console.log("Stock has been updated\n");
+				continueOrEnd();
 			});
 		}	
 	});
@@ -143,10 +132,41 @@ function addNewProduct() {
 			var departmentName = user.departmentName;
 
 			connection.query('INSERT INTO Products (productName,departmentName,Price,stockQuantity) VALUES ("'+productName+'","'+departmentName+'",'+price+',' +quantity+");", function(err, result) {
-					console.log("Product has been added");
+					console.log("Product has been added\n");
+					continueOrEnd();
 			});
 		}	
 	});
 }
 
+function continueOrEnd() {
+	inquirer.prompt([
 
+		{
+			message: 'Would you like to do another task?',
+			type: 'confirm',
+			name: 'answer'
+		}
+
+	]).then(function(user){
+		if (user.answer) {
+			getChoice();
+		} else {
+            connection.end(function(err) {
+				console.log('\n[Connection Terminated.]')
+			});
+		}
+	});
+}
+
+function createTable(result) {	
+		for (var i = 0; i < result.length; i++) {
+
+			table.push(
+	    		[result[i].itemId, result[i].productName, result[i].departmentName, result[i].Price, result[i].stockQuantity]
+			);
+		}	
+		console.log(table.toString());
+		continueOrEnd();
+
+}
