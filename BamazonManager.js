@@ -21,6 +21,7 @@ var table = new Table({
   , colWidths: [10, 20, 20, 15, 10]
 });
 
+// Gets a choice from the user.
 function getChoice() {
     inquirer.prompt({
         name: "action",
@@ -28,6 +29,7 @@ function getChoice() {
         message: "What would you like to do?",
         choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
     }).then(function(answer) {
+    	//Performs an action based ont eh choice made by the user
         switch(answer.action) {
             case 'View Products for Sale':
                 viewProducts();
@@ -48,6 +50,7 @@ function getChoice() {
     })
 };
 
+//Queries the entire database and places it in a table 
 function viewProducts() {
 	connection.query('SELECT * FROM Products', function(err, result) {
 		createTable(result);
@@ -55,13 +58,14 @@ function viewProducts() {
 
 }
 
+//Returns any databse entries that have a stock value less than 5
 function viewLowInventory() {
 	connection.query('SELECT * FROM Products WHERE stockQuantity<5', function(err, result) {
 		createTable(result);
 	})
 }
 
-
+//Gets values from the user to restock an item
 function restockInventory() {
 	inquirer.prompt([
 
@@ -78,6 +82,7 @@ function restockInventory() {
 		}
 
 	]).then(function(user){
+		// checks to see if the information provided is a numeric value. if false then console log error and run the function again.
 		if (isNaN(user.itemId) || isNaN(user.quantity)) {
 			console.log("Please input numeric values")
 			restockInventory();
@@ -93,6 +98,7 @@ function restockInventory() {
 	});
 }
 
+//Gets values from the user necessary to add a new product to the database
 function addNewProduct() {
 	inquirer.prompt([
 
@@ -121,6 +127,7 @@ function addNewProduct() {
 		}
 
 	]).then(function(user){
+		// checks to see if the information provided is a numeric value. if false then console log error and run the function again.		
 		if (isNaN(user.Price) || isNaN(user.stockQuantity)) {
 			console.log("Please input numeric values")
 			addNewProduct();
@@ -139,6 +146,7 @@ function addNewProduct() {
 	});
 }
 
+//Asks the user if they want to do another transaction or exit the program.
 function continueOrEnd() {
 	inquirer.prompt([
 
@@ -159,6 +167,7 @@ function continueOrEnd() {
 	});
 }
 
+//Generates a table from cli-table npm to present information returned to the user.
 function createTable(result) {	
 		for (var i = 0; i < result.length; i++) {
 

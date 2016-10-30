@@ -22,6 +22,7 @@ var table = new Table({
 
 viewProducts();
 
+// When called runs a query against the mySql database and returns all the data. the data is passed into the cli-tables npm to make the data more presentable in the the terminal
 function viewProducts() {
 	connection.query('SELECT * FROM Products', function(err, result) {
 		for (var i = 0; i < result.length; i++) {
@@ -37,6 +38,7 @@ function viewProducts() {
 }
 
 function makePurchase() {
+	// get the information from the user to query the database
 	inquirer.prompt([
 
 		{
@@ -52,17 +54,19 @@ function makePurchase() {
 		}
 
 	]).then(function(user){
+		// checks to see if the information provided is a numeric value. if false then console log error and run the function again.
 		if (isNaN(user.itemId) || isNaN(user.quantity)) {
 			console.log("Please input numeric values")
 			makePurchase();
 		} else {
+			// returns an object that contains the price and stock value for the the specificied userId.
 			connection.query('SELECT Price,stockQuantity FROM Products WHERE itemId=?', [user.itemId], function(err, result) {
 
 				var quantity = parseInt(user.quantity);
 				var stockQuantity = result[0].stockQuantity
 				var itemId = user.itemId;
 				var price = result[0].Price;
-
+//  checks if the amount requested by the customer is smaller than the amount in stock.
 				if (quantity <= stockQuantity) {
 					updateStock(quantity,stockQuantity,itemId,price);
 				} else {
@@ -73,7 +77,7 @@ function makePurchase() {
 		}	
 	});
 }
-
+// decreases the stock value and updates the database with the new value
 function updateStock(quantity,stockQuantity,itemId,price) {
 	stockQuantity-= quantity;
 
@@ -81,7 +85,7 @@ function updateStock(quantity,stockQuantity,itemId,price) {
 	    var total = price*quantity;
 	    console.log("Your total is: $" + total);
 	});
-	
+	// ends the connection to the server. 
 	connection.end(function(err) {
 		console.log('\n[Connection Terminated.]')
 	});
